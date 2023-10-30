@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3u4030c6806p"]
+
+[ext_resource type="Script" path="res://SnakeHead.cs" id="2_hp2ai"]
+[ext_resource type="Texture2D" uid="uid://b0iuf8c668d1f" path="res://snake-head-right.png" id="2_jyb8l"]
+[ext_resource type="Texture2D" uid="uid://bnmci37yp0tii" path="res://apple.png" id="4_85thb"]
+[ext_resource type="Texture2D" uid="uid://cpt8grqixavjb" path="res://snake-body.png" id="4_b042i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1yk7"]
+size = Vector2(129, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slx2t"]
+size = Vector2(128, 128)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Snake" type="Area2D" parent="."]
+position = Vector2(545, 288)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Snake"]
+position = Vector2(-1.5, 0)
+shape = SubResource("RectangleShape2D_l1yk7")
+
+[node name="Head" type="Sprite2D" parent="Snake"]
+texture = ExtResource("2_jyb8l")
+script = ExtResource("2_hp2ai")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Snake/Head"]
+
+[node name="Body1" type="Sprite2D" parent="Snake"]
+position = Vector2(-128, 0)
+texture = ExtResource("4_b042i")
+
+[node name="Body2" type="Sprite2D" parent="Snake"]
+position = Vector2(-256, 0)
+texture = ExtResource("4_b042i")
+
+[node name="Apple" type="Area2D" parent="."]
+position = Vector2(864, 416)
+scale = Vector2(0.265625, 0.265625)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Apple"]
+shape = SubResource("RectangleShape2D_slx2t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Apple"]
+texture = ExtResource("4_85thb")
+
+[node name="Score" type="RichTextLabel" parent="."]
+offset_left = 1076.0
+offset_right = 1152.0
+offset_bottom = 24.0
+text = "Score: 0"
+
+[node name="GameOver" type="RichTextLabel" parent="."]
+visible = false
+offset_left = 372.0
+offset_top = 126.0
+offset_right = 811.0
+offset_bottom = 537.0
+theme_override_font_sizes/normal_font_size = 150
+text = "Game Over"
+
+[connection signal="screen_exited" from="Snake/Head/VisibleOnScreenNotifier2D" to="Snake/Head" method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="Apple" to="Snake/Head" method="_on_apple_area_entered"]
